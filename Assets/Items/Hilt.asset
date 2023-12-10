@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: d67ada919cab30b4fa3c5e17677174c5, type: 3}
   itemName: Hilt
+  mass: 3

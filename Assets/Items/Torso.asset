@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Torso
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
-  itemName: 
+  itemName: Torso
+  mass: 8

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Person
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
-  itemName: 
+  itemName: Action Figure
+  mass: 10

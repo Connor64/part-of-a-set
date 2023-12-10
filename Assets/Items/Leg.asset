@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Leg
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
-  itemName: 
+  itemName: Leg
+  mass: 6

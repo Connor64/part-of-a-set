@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Arm
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
-  itemName: 
+  itemName: Arm
+  mass: 5

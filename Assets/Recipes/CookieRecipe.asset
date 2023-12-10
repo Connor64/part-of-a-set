@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 892ed0ca3f7cfa843850692dac8b2244, type: 3}
-  m_Name: SwordRecipe
+  m_Name: CookieRecipe
   m_EditorClassIdentifier: 
   ingredients:
-  - item: {fileID: 11400000, guid: 14e2a9a7dfec95141becc03406794ade, type: 2}
+  - item: {fileID: 11400000, guid: c6a31acd23675ea4e8a36faea852be10, type: 2}
+    quantity: 3
+  - item: {fileID: 11400000, guid: 53bc53b79d42c344aa97ff33dce45ff3, type: 2}
+    quantity: 2
+  - item: {fileID: 11400000, guid: 929ea283204bae640abc0d8a6901b327, type: 2}
     quantity: 1
-  - item: {fileID: 11400000, guid: 2cf79acdc84e1564eb4531a501302587, type: 2}
-    quantity: 1
-  product: {fileID: 11400000, guid: 7ee663a7b764d9b4ca52495cfed8817c, type: 2}
+  product: {fileID: 11400000, guid: b1820ed43d0741e41ab067614a781ba0, type: 2}

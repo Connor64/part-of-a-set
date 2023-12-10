@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 023f5abc6eec58b43b8ff7dac08c1fe8, type: 3}
   m_Name: Sugar
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
-  itemName: 
+  sprite: {fileID: 21300000, guid: d670f03e7203db0419d62ba166dbf327, type: 3}
+  itemName: Sugar
+  mass: 5
