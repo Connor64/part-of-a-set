@@ -219,7 +219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5191258132567392859}
   m_Layer: 5
-  m_Name: IngredientLabel
+  m_Name: ItemLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

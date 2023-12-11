@@ -48,7 +48,7 @@ public class AssemblyPanel : MonoBehaviour {
                 for (int j = 0; j < items.Count; j++) {
                     if (recipe.ingredients[j].quantity > items[j].Val) {
                         RefreshLabel(i);
-                        return;
+                        return; // Return if the recipe isn't complete
                     }
                 }
 

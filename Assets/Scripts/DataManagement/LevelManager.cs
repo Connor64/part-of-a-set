@@ -11,24 +11,28 @@ public class LevelManager : MonoBehaviour {
 
     public Level currentLevel { get; private set; }
 
+    private static LevelManager instance;
+
     [SerializeField]
     private Level defaultLevel;
 
     void Awake() {
-        DontDestroyOnLoad(gameObject);
+        if (instance == null) {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        } else {
+            Destroy(gameObject);
+        }
 
         levels = new List<Level>();
-    }
-
-    void Start() {
-        levels = new List<Level>();
-
         UnityEngine.Object[] objects = Resources.LoadAll("Levels");
         foreach (UnityEngine.Object obj in objects) {
             print("Level name: " + ((Level)obj).levelName);
             levels.Add((Level) obj);
         }
+    }
 
+    void Start() {
         // If the game is started on the gameplay scene (mainly for debugging/development)
         if (SceneManager.GetActiveScene().name == "GameplayScene") {
             LoadLevel(defaultLevel == null ? levels[0] : defaultLevel, false);
@@ -41,20 +45,23 @@ public class LevelManager : MonoBehaviour {
 
         // Load/reload gameplay scene
         if (loadScene) {
-            Scene scene = SceneManager.GetSceneByName("GameplayScene");
-            SceneManager.LoadScene(scene.name);
-            while (!scene.isLoaded) { } // Wait for scene to fully load
+            SceneManager.LoadSceneAsync("GameplayScene");
+        }
+
+        StartCoroutine(LoadLevelContent(loadScene));
+    }
+
+    private IEnumerator LoadLevelContent(bool loadScene) {
+        while (loadScene && (SceneManager.GetActiveScene().name != "GameplayScene")) {
+            print("waiting...");
+            yield return null;
         }
 
         AssemblyGrid assemblyGrid = FindObjectOfType<AssemblyGrid>();
-        assemblyGrid.PopulateAssemblies(level.recipes);
+        assemblyGrid.PopulateAssemblies(currentLevel.recipes);
 
         // Load recipes into itemManager
         ItemManager itemManager = FindObjectOfType<ItemManager>();
-        itemManager.recipes.Clear();
-        foreach (RecipeCount recipeCount in level.recipes) {
-            itemManager.recipes.Add(new KeyVal<Recipe, int>(recipeCount.recipe, 0));
-        }
-        itemManager.StartCoroutine("ItemSpawning");
+        itemManager.Initialize(currentLevel);
     }
 }

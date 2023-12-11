@@ -19,16 +19,18 @@ public class ItemObject : MonoBehaviour {
     private Camera cam;
     private bool selected = false;
 
+    private bool inTrigger = false;
+
     [SerializeField]
     private Item item;
 
     [SerializeField]
     [Range(0.01f, 0.99f)]
-    private float followSpeed = 0.3f;
+    private float followSpeed = 0.25f;
 
     [SerializeField]
     [Range(0, 1)]
-    private float velocityInheritence = 0.2f;
+    private float velocityInheritence = 0.5f;
 
     void Awake() {
         body = GetComponent<Rigidbody2D>();
@@ -105,6 +107,8 @@ public class ItemObject : MonoBehaviour {
     void OnTriggerExit2D(Collider2D other) {
         if (!selected && (other.gameObject.name == "DeathPlane")) {
             Destroy(gameObject);
+        } else if ((other.gameObject.tag == "Assembly") || (other.gameObject.tag == "Deposit")) {
+            inTrigger = false;
         }
     }
 
@@ -113,22 +117,25 @@ public class ItemObject : MonoBehaviour {
             selected = false;
             itemManager.SetSelectedItem(null);
             other.GetComponentInParent<AssemblyPanel>().AddIngredient(this);
+            inTrigger = true;
         } else if (other.gameObject.tag == "Deposit") {
             selected = false;
             itemManager.SetSelectedItem(null);
             itemManager.DepositItem(this);
-        }
-    }
-
-    void OnCollisionStay2D(Collision2D collision) {
-        if (collision.gameObject.tag == "Conveyor") {
-            body.AddForce(new Vector2(5, 0));
+            inTrigger = true;
         }
     }
 
     public IEnumerator RejectItem(Vector2 boost) {
         yield return new WaitForSeconds(0.25f);
 
-        body.AddForce(new Vector2(Random.Range(-5, 5), 10) + boost, ForceMode2D.Impulse);
+        float forceX = itemManager.rejectForce.x * body.mass;
+        Vector2 force = (new Vector2(0, itemManager.rejectForce.y) + boost) * body.mass;
+
+        while (inTrigger) {
+            force.x = Random.Range(-forceX, forceX);
+            body.AddForce(force, ForceMode2D.Impulse);
+            yield return null;
+        }
     }
 }
