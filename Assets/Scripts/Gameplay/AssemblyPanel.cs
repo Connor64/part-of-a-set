@@ -40,13 +40,13 @@ public class AssemblyPanel : MonoBehaviour {
 
     public void AddIngredient(ItemObject itemObject) {
         for (int i = 0; i < items.Count; i++) {
-            if ((items[i].Key == itemObject.GetItem()) && (recipe.ingredients[i].quantity > items[i].Val)) {
+            if ((items[i].Key == itemObject.GetItem()) && (recipe.ingredients[i].amount > items[i].Val)) {
                 items[i].Val++;
                 Destroy(itemObject.gameObject);
 
                 // Check which ingredients have been completed
                 for (int j = 0; j < items.Count; j++) {
-                    if (recipe.ingredients[j].quantity > items[j].Val) {
+                    if (recipe.ingredients[j].amount > items[j].Val) {
                         RefreshLabel(i);
                         return; // Return if the recipe isn't complete
                     }
@@ -55,7 +55,7 @@ public class AssemblyPanel : MonoBehaviour {
                 // If this is reached, the recipe is complete
 
                 // Spawn product
-                itemManager.SpawnItem(recipe.product, spawnLocation.position, Vector2.zero);
+                itemManager.SpawnItem(recipe.product, Vector2.zero);
 
                 // Reset the counts of all ingredients and update label
                 RefreshLabels(true);
@@ -65,7 +65,7 @@ public class AssemblyPanel : MonoBehaviour {
         }
 
         // If this is reached, the item is not a valid ingredient or there is no more room for it
-        StartCoroutine(itemObject.RejectItem(Vector2.zero));
+        // StartCoroutine(itemObject.RejectItem(Vector2.zero));
     }
 
     private void RefreshLabels(bool reset) {
@@ -76,6 +76,6 @@ public class AssemblyPanel : MonoBehaviour {
     }
 
     private void RefreshLabel(int index) {
-        itemTexts[index].text = items[index].Val + "/" + recipe.ingredients[index].quantity;
+        itemTexts[index].text = items[index].Val + "/" + recipe.ingredients[index].amount;
     }
 }

@@ -19,8 +19,6 @@ public class ItemObject : MonoBehaviour {
     private Camera cam;
     private bool selected = false;
 
-    private bool inTrigger = false;
-
     [SerializeField]
     private Item item;
 
@@ -107,35 +105,27 @@ public class ItemObject : MonoBehaviour {
     void OnTriggerExit2D(Collider2D other) {
         if (!selected && (other.gameObject.name == "DeathPlane")) {
             Destroy(gameObject);
-        } else if ((other.gameObject.tag == "Assembly") || (other.gameObject.tag == "Deposit")) {
-            inTrigger = false;
         }
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.tag == "Assembly") {
-            selected = false;
-            itemManager.SetSelectedItem(null);
-            other.GetComponentInParent<AssemblyPanel>().AddIngredient(this);
-            inTrigger = true;
-        } else if (other.gameObject.tag == "Deposit") {
-            selected = false;
-            itemManager.SetSelectedItem(null);
-            itemManager.DepositItem(this);
-            inTrigger = true;
+        if (other.gameObject.tag == "Deposit") {
+            other.gameObject.GetComponentInParent<Chute>().AcceptItem(this);
+        } else if (other.gameObject.tag == "Submission") {
+            itemManager.SubmitItem(this);
+            print("submitting the item from trigger thing!!!!!!!!!!!!!!!");
         }
     }
 
-    public IEnumerator RejectItem(Vector2 boost) {
-        yield return new WaitForSeconds(0.25f);
+    public void Reject(Vector2 direction) {
+        StartCoroutine(RejectItem(direction));
+    }
 
-        float forceX = itemManager.rejectForce.x * body.mass;
-        Vector2 force = (new Vector2(0, itemManager.rejectForce.y) + boost) * body.mass;
+    private IEnumerator RejectItem(Vector2 direction) {
+        yield return new WaitForSeconds(0.1f);
 
-        while (inTrigger) {
-            force.x = Random.Range(-forceX, forceX);
-            body.AddForce(force, ForceMode2D.Impulse);
-            yield return null;
-        }
+        Vector2 force = direction.normalized * itemManager.rejectForce * body.mass;
+
+        body.AddForce(force, ForceMode2D.Impulse);
     }
 }

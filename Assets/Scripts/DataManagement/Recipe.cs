@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct ItemQuantity {
+public struct ItemCount {
     public Item item;
-    public int quantity;
+    public int amount;
 }
 
 [CreateAssetMenu]
 public class Recipe : ScriptableObject {
-    public List<ItemQuantity> ingredients;
+    public List<ItemCount> ingredients;
     public Item product;
 }
